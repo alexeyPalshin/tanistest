@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tanis test</title>
+</head>
+<body>
+<form id="file-upload" method="post" enctype="multipart/form-data" action="file-processing.php">
+    <div>
+        <label for="file">Choose file to upload</label>
+        <input type="file" id="file" name="file" multiple>
+    </div>
+    <div>
+        <button type="submit">Upload</button>
+    </div>
+</form>
+<div id="result"></div>
+<script src="public/main.js"></script>
+</body>
+</html>

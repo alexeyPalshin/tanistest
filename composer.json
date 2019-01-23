@@ -1,0 +1,14 @@
+{
+  "name": "Tanis",
+  "description": "Tanis test project",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Belitsoft",
+      "email": "a.palshin@belitsoft.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"Tanis\\": "src/"}
+  }
+}
