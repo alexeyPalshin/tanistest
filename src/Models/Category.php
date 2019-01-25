@@ -23,8 +23,8 @@ class Category extends Model
 
     public function __construct(array $fields)
     {
-        $this->id = $fields['id'];
-        $this->name = $fields['name'];
+        $this->setName($fields['name']);
+        $this->setId($fields['id']);
     }
 
     /**
@@ -37,6 +37,41 @@ class Category extends Model
 
     public function getValues()
     {
-        return '"' . $this->id . '", "' . $this->name . '"';
+        return '"' . $this->getId() . '", "' . $this->getName() . '"';
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId(string $id = '')
+    {
+        if (empty($id)) {
+            $id = substr(md5($this->getName()), -24);
+        }
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 }

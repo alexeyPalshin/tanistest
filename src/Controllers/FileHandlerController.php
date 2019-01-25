@@ -20,7 +20,7 @@ class FileHandlerController
 
     public function __construct($json)
     {
-        $this->json->$json;
+        $this->json = $json;
         $this->entityManager = new EntityManager();
     }
 
@@ -41,7 +41,7 @@ class FileHandlerController
                 case 2:
                     if ($key == 'products') {
                         foreach ($val as $index => $product) {
-                            $this->entityManager->insert(new Category($category));
+//                            $this->entityManager->insert(new Category($category));
                         }
                     }
             }
