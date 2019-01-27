@@ -3,6 +3,10 @@
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+ul {
+    list-style-type: none;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -17,15 +21,31 @@
     flex: 1;
 }
 
-.next-items:after {
+.child-items:after {
     content: "\203A";
     font-size: 25px;
+}
+.remove-item{
+    margin: 0 10px;
+}
+.remove-item:after {
+    content: '\00D7';
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .new-hide {
     display: none;
 }
 
-#add-item:after {
+.add-item-action {
+    display: none;
+}
+.add-item-action.active {
+    display: block;
+}
+
+#add-item:before {
+    margin: 0 10px;
     content: '\002B'
 }

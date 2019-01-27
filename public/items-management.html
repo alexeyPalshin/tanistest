@@ -4,19 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/ajax.js"></script>
-    <script src="js/template.js"></script>
-    <script src="js/items.js"></script>
 </head>
 <body>
 <div class="container">
     <div class="row" id="items-wrapper">
         <div class="column">
-            categories list:
-            <ul id="categories-list">
+            CATEGORIES:
+            <ul data-api="category" id="categories-list">
 
             </ul>
-            <span id="add-item"></span>
+            <span class="add-item-action active" id="add-item">add</span>
 
             <div id="new-item-form-wrapper" class="new-hide">
                 <form id="new-item-form" method="post"  action="category.php" enctype="multipart/form-data">
@@ -29,9 +26,18 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div class="column" id="brands-list">
+
+        </div>
+        <div class="column" id="products-list">
+
 
         </div>
     </div>
 </div>
+<script src="js/ajax.js"></script>
+<script src="js/template.js"></script>
+<script src="js/category.js"></script>
 </body>
 </html>

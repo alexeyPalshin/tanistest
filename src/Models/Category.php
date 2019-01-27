@@ -21,10 +21,8 @@ class Category extends Model
      */
     public $name;
 
-    public function __construct(array $fields)
+    public function __construct()
     {
-        $this->setName($fields['name']);
-        $this->setId($fields['id']);
     }
 
     /**

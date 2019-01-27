@@ -30,7 +30,7 @@ class EntityManager
         if (!$this->connection) {
 
             $mysqlConfig = [
-                'host' => '172.18.0.3',
+                'host' => '172.18.0.2',
                 'driver' => 'mysql',
                 'username' => 'root',
                 'password' => 'root',
@@ -42,8 +42,21 @@ class EntityManager
         return $this->connection;
     }
 
+    public function getItem(Model $model, $itemId)
+    {
+        try {
+            $stmt = $this->getConnection()->prepare('SELECT * FROM ' . $model->getTable() . ' WHERE item_id=?');
+            $stmt->execute([intval($itemId)]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            var_dump($e);
+        }
+    }
+
     /**
      * @param Model $model
+     * @return Model
      */
     public function insert(Model $model)
     {
@@ -51,10 +64,20 @@ class EntityManager
             $stmt = $this->getConnection()->prepare('INSERT INTO ' . $model->getTable() . ' (' . $model->getFields() . ') VALUES (' . $model->getValues() . ')');
             $stmt->execute();
         } catch (\PDOException $e) {
-            $ed = $e;
+
         }
-        $j = $this->getConnection()->lastInsertId();
-        return $model;
+
+        return $this->getItem($model, $this->getConnection()->lastInsertId());
+    }
+
+    public function delete($table, $itemId)
+    {
+        try {
+            $stmt = $this->getConnection()->prepare('DELETE FROM ' . $table . ' WHERE item_id=?');
+            $stmt->execute([intval($itemId)]);
+        } catch (\PDOException $e) {
+            var_dump($e);
+        }
     }
 
     public function getCategories()
@@ -66,14 +89,21 @@ class EntityManager
 
     public function getCategoryBrands($catId)
     {
-        $stmt = $this->getConnection()->prepare('SELECT b.name FROM products
-                                                          INNER JOIN brands b on products.brand_id = b.brand_id
-                                                          INNER JOIN categories c on products.category_id = c.category_id
-                                                          WHERE c.category_id = :category_id
-                                                          GROUP BY b.brand_id'
+        $stmt = $this->getConnection()->prepare('SELECT b.* FROM products
+                                                          INNER JOIN brands b on products.brand_id = b.item_id
+                                                          INNER JOIN categories c on products.category_id = c.item_id
+                                                          WHERE c.item_id=?
+                                                          GROUP BY b.item_id'
         );
-        $stmt->bindParam(':category_id', $catId);
-        $stmt->execute();
+        $stmt->execute([intval($catId)]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getBrandProducts($id)
+    {
+        $stmt = $this->getConnection()->prepare('SELECT * FROM products WHERE brand_id=?'
+        );
+        $stmt->execute([intval($id)]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

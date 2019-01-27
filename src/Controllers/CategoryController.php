@@ -3,38 +3,43 @@
 
 namespace Tanis\Controllers;
 
-use Tanis\Database\Managers\EntityManager;
+use Tanis\Http\Response;
 use Tanis\Models\Category;
 
-class CategoryController
+class CategoryController extends BaseController
 {
     /**
-     * @var EntityManager
+     * @var string
      */
-    private $em;
+    public $table = 'categories';
 
-    public function __construct()
+    public function get($id = null)
     {
-        $this->em = new EntityManager();
+        $items = isset($id) ? $this->getEm()->getCategoryBrands($id) : $this->getEm()->getCategories();
+        $response = new Response(json_encode([
+            'items' => $items
+        ]), 200);
+        $response->send();
     }
 
-    public function getCategories()
+    public function store($name)
     {
-        return $this->em->getCategories();
+        $category = new Category();
+        $category->setName($name);
+        $category->setId();
+        $responce = new Response(json_encode([
+            'category' => $this->getEm()->insert($category)
+        ]), 200);
+
+        $responce->send();
+
     }
 
-    public function storeCategory()
+    /**
+     * @return string
+     */
+    public function getTable(): string
     {
-        $category = new Category([
-            'id' => isset($_POST['id']) ?? '',
-            'name' => $_POST['name']
-        ]);
-        return $this->em->insert($category);
+        return $this->table;
     }
-
-    public function getCategoryBrands($catId)
-    {
-        return $this->em->getCategoryBrands($catId);
-    }
-
 }
